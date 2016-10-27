@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/react.js"  charset="utf-8"></script>
+		<script src="js/react-dom.js" charset="utf-8"></script>
+		<script src="js/browser.min.js"  charset="utf-8"></script>
+		<style type="text/css">			
+		.aa{color:red;}/*第一种样式写法*/
+		</style>
+	</head>
+	<body>
+		<div id="example"></div>
+		<script type="text/babel">
+			var arr=[<h1>asdfasdf</h1>,<h2>asdfas</h2>];
+			ReactDOM.render(
+				<div>{arr}</div>,document.getElementById("example")
+			)
+
+/*==================================================================================*/
+var stylecss={
+	aa:{fontSize:"30px",color:"blue"}/*第二种样式写法；注：font-size写成fontSize*/
+}
+var cli={
+	ck:function(){
+		alert("点击")
+	},
+	ch:function(){
+		console.log("change")
+	}
+}
+var Helloreact = React.createClass({//组件开头必须大写
+	render:function(){
+		var _css=this.css
+		var _js=this.js
+		return (
+			<div className="aa">			//!!1、这个div必须写在这里不能换行,如果写（）则可以随便写2、多个必须用一个标签包起来
+					<div onClick={cli.ck}>hello,{this.props.name}</div>
+					<div style={stylecss.aa}>Hi,{this.props.age}</div>
+					<input id="inp1" type="text" onChange={_js.change} style={_css.input}/>
+					<input id="inp2" type="text" onChange={cli.ch} />
+			</div>
+		)
+	}
+})
+	Helloreact.prototype.css={
+		input:{color:"orange",fontSize:"1em"}
+	}
+	Helloreact.prototype.js={
+		change:function(event){
+			console.log(event.target.value)
+			document.getElementById("inp2").value=event.target.value;//实现双向数据绑定注：不支持jquery方法
+		}
+	}
+
+ReactDOM.render(
+	<Helloreact name="john" age="20"/>,document.getElementById("example")
+)
+/*==================================================================================*/
+
+		</script>
+	</body>
+</html>
+

@@ -1,0 +1,62 @@
+<!--<!DOCTYPE html>
+<html>
+  <head>
+    <script src="js/react.js"></script>
+    <script src="js/react-dom.js"></script>
+    <script src="js/browser.min.js"></script>
+    <style type="text/css">
+    	.sp1{border:1px solid red;}
+    </style>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+ 	
+		var MyComponent = React.createClass({
+			getInitialState:function(){
+				return {
+					default:".."
+				}
+			},
+		  	ch:function(event){
+		  		var val= event.target.value
+		  		Child.props.name(val) //通过this.props调用原型的属性或方法
+		  	},
+			ck:function(event){
+			  	var val= event.target.checked
+			  	Child.props.name(val)
+			  },			
+		  render:function() {
+			console.log(this.state)
+		    return (
+		      <div>
+			  			<input type="text" onChange={this.ch}/>
+			  			<input type="checkbox" onClick={this.ck}/>
+		      </div>
+		    );
+		  }
+		})
+		/****************************************************************************/
+		var Child=React.createClass({//子组件
+			render:function(){
+			var _this=this
+			return(
+			  	<div>
+					<span className="sp1">{this.state.default}</span>	
+					<MyComponent name={function(v){
+						_this.setState({default:v})
+					}}/>
+					<input type="checkbox" checked={this.state.default}/><br/>
+					<input type="checkbox" checked={this.state.default}/><br/>
+					<input type="checkbox" checked={this.state.default}/><br/>
+					<input type="checkbox" checked={this.state.default}/><br/>
+					<input type="checkbox" checked={this.state.default}/><br/>
+					<input type="checkbox" checked={this.state.default}/>					
+			  	</div>
+			  	)
+			}
+		})   
+		ReactDOM.render(<MyComponent/>,document.getElementById('example'));
+    </script>
+  </body>
+</html>-->

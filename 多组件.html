@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="js/react.js"></script>
+    <script src="js/react-dom.js"></script>
+    <script src="js/browser.min.js"></script>
+    <script type="js/stylereact.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+      var danji={//业务需求写在这里
+      	ck:function(){
+      		alert(1)
+      	},
+      	ch:function(){
+      		var num=0
+      		fn()
+      		function fn(){
+      			++num
+      			return num
+      		}
+      		console.log(fn(num))
+      	}
+      }
+      /******************组件1****************************/
+      //组件名必须大写Helloreact
+      var Helloreact1 = React.createClass({//Helloreact组件名
+      	render:function(){
+      		var stylereact = {
+      			txt:{color:"red",width:"100px",height:"100px",border:"1px solid blue"}
+      		}
+      		return (
+      		<div>
+      			<div onClick = {danji.ck} style={stylereact.txt}>sdfsd</div>  
+					</div>
+      		)
+      	}
+      })
+      /******************组件2****************************/
+      var Helloreact2 = React.createClass({//Helloreact组件名
+      	render:function(){
+      		return (
+      		<div>
+				<input type="text" onChange={danji.ch}/>   
+			</div>
+      		)
+      	}
+      })
+  
+      /******************组件1和组件2放到Txt****************************/
+  var Txt = React.createClass({
+      render:function(){
+      	return (
+      		<div>
+      			<Helloreact1/>
+      			<Helloreact2/>
+      		</div>
+      	)
+      }
+    })
+
+      ReactDOM.render(<Txt/>,document.getElementById("example"))
+    </script>
+  </body>
+</html>
+ 

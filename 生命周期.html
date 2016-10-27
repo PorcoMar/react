@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="js/react.js"></script>
+    <script src="js/react-dom.js"></script>
+    <script src="js/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+		var MyComponent = React.createClass({
+		getDefaultProps:function(){//作用于组件类，只调用一次，返回对象用于设置默认的props
+			console.log("1getDefaultProps")
+			return {
+				name:"11111111"
+			}
+		},
+		getInitialState:function(){//作用于组件的实例，在实例创建时调用一次，用于初始化每个实例的state，此时可以访问this.props。
+			console.log("2getInitialState")
+			return {
+				default:""
+			}
+		},
+		componentWillMount:function(){//在完成首次渲染之前调用，此时仍可以修改组件的state。//组件渲染之前的状态
+			console.log("3componentWillMount")
+		},
+		ch:function(event){
+			var val=event.target.value
+			this.setState({default:val})
+		},
+	  render: function() {//必选的方法，创建虚拟DOM，该方法具有特殊的规则：只能通过this.props和this.state访问数据,可以返回null、false或任何React组件,只能出现一个顶级组件（不能返回数组）,不能改变组件的状态     ,不能修改DOM的输出
+	  	var _this=this
+		console.log(this.props)//返回结果组件全部属性
+	    return (
+	      <div>
+				<input type="text" id="inp1" onChange={this.ch} />
+				<p>{this.state.default}</p>
+				<Child name={this.state.default}/>
+	      </div>
+	    )
+	  },
+		componentDidMount:function(){//真实的DOM被渲染出来后调用，在该方法中可通过this.getDOMNode()访问到真实的DOM元素。此时已可以使用其他类库来操作这个DOM。在服务端中，该方法不会被调用。
+			////组件渲染成功的状态
+			//来操作真是的dom
+			console.log("4componentDidMount")
+			var oInp=document.getElementById("inp1")
+			oInp.style.color="red"
+		}  
+	});
+	var Child = React.createClass({
+		componentWillReceiveProps:function(nextProps){//组件接收到新的props时调用，并将其作为参数nextProps使用，此时可以更改组件props及state。
+			console.log(nextProps)
+			if(nextProps.name=="aaa"){
+				console.log("5componentWillReceiveProps")
+				return true
+			}else{
+				return false
+			}
+		},
+		shouldComponentUpdate:function(nextProps,nextState){
+			//告诉开发这是否进行二次渲染
+			return true
+			//if(nextProps.name=="renwei"){
+				//console.log("6shouldComponentUpdate")
+				//return true
+			//}else{
+				//return false
+			//}
+		},
+		componentWillUpdate:function(nextProps,nextState){
+			//正在被重新渲染  新数据
+			console.log("7componentWillUpdate")
+			console.log(nextProps)
+		},
+		render:function(){
+			return(<div>{this.props.name}</div>)
+		},
+		componentDidUpdate:function(nextProps,nextState){
+			//渲染完成之后的状态
+			console.log("8componentDidUpdate")
+		}
+			
+
+	})	
+	ReactDOM.render(<MyComponent/>,document.getElementById('example'));
+    </script>
+  </body>
+</html>
+

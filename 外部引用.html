@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="js/react.js"></script>
+    <script src="js/react-dom.js"></script>
+    <script src="js/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+var MyComponent = React.createClass({
+	getDefaultProps:function(){//获取默认值
+		return {
+			"sex":"male"	//外部添加一个属性给组件
+		}
+	},
+  render: function() {
+	console.log(this.props)//返回结果组件全部属性
+  	var value="hello"
+    return (
+      <div>
+			<p>{value}</p>
+			<input type="text" value={this.props.title}/><br/>
+			<input type="text" value={this.props.title2.age}/><br/>
+			<input type="text" value={this.props.name}/>
+      </div>
+    );
+  }
+});
+
+var s="name is zhangsan"//直接赋值
+var s2={"name":"李鹏浩34","age":"20"}//变成数组形式
+var s3={"name":"嘉文","age":"30"}//获取全部属性
+
+ReactDOM.render(
+  <MyComponent title={s} title2={s2} {...s3}/>,document.getElementById('example')
+);
+//react data props
+//把数据放到组件之内
+//属性 key-val
+//组件内怎么获取数据
+    </script>
+  </body>
+</html>
+

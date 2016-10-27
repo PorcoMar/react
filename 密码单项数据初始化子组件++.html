@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="js/react.js"></script>
+    <script src="js/react-dom.js"></script>
+    <script src="js/browser.min.js"></script>
+    <style type="text/css">
+    	.inp2{border:0;display:inline;width:100%;color:red;}
+    </style>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+var MyComponent = React.createClass({
+	getInitialState:function(){
+		return {
+			value:"点击按钮隐藏",//初始化步骤1
+			type:"text",
+			name:"显示密码"
+		}
+	},
+	ck:function(){
+		if(this.state.type=="text"){
+			this.setState({//二次渲染,完成后自动调用 this.render方法
+				type:"password",
+				name:"密码"
+			})		
+		}else{
+			this.setState({
+				type:"text",
+				name:"显示密码"
+			})				
+		}
+	},
+	ch:function(event){
+		this.setState({value:event.target.value})//this.setState 方法就修改状态值，每次修改以后，自动调用 this.render 方法
+	},
+  render:function() {
+  	var _this=this
+    return (
+      <div>
+      		<input type={this.state.type} value={this.state.value} onChange={this.ch}/>
+			<input type="button" value={this.state.name} onClick={this.ck} />
+			<input type="checkbox" onClick={this.ck2}/><br/>
+			<input className="inp2" type={this.state.type} value={this.state.value}/>
+			<Child type={this.state.type} value={this.state.value}/>
+      </div>
+    );
+  }
+});
+	var Child = React.createClass({
+		render:function(){
+			return(
+			<div>				
+				<input type={this.props.type} value={this.props.value}/>
+				<div>{this.props.value}</div>			
+			</div>
+			)
+		}
+	})
+ReactDOM.render(<MyComponent/>,document.getElementById('example'));
+    </script>
+  </body>
+</html>

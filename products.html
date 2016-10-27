@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/react.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/react-dom.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/browser.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			p{border:1px solid red;}
+		</style>
+	</head>
+	<body>
+		<div id="example"></div>
+		<script type="text/babel">
+			var stylecss={
+				blue:{border:"1px solid blue"}	
+			}
+			var Porco=React.createClass({
+				 getInitialState:function(){//初始化
+					return {value:"初始化value值"};//这里只能写value
+				},
+				handleChange:function(event){
+					this.setState({value:event.target.value})//this.setState 方法就修改状态值，每次修改以后，自动调用 this.render 方法
+				},
+				render:function(){
+					var val=this.state.value//初始化对象可以通过 this.state 属性读取然后赋给val
+					return (
+						<div id="div1" style={this.css.div1}>
+							<div id="div2" style={this.css.div2}>
+								<input type="text" id="inp" value={val} onChange={this.handleChange}/><br/>
+								<p id="p1">{val}</p>
+								<input type="checkbox" />Only Show Products In Stock
+							</div>
+							<div id="div3" style={this.css.div3}>
+								<b>name</b><b>Price</b>
+								<p style={stylecss.blue}>sportign goods </p>
+								<p>football $49.99</p>
+								<p>basketball $49.99</p>
+								<p>basball $49.99</p>
+								<p style={stylecss.blue}>Electronics</p>
+								<p>ipad Touch $99.989</p>
+								<p>iphone5 $99.98</p>
+								<p>Nexus7 $99.98</p>
+							</div>
+						</div>
+					)
+				}
+			})
+			
+			Porco.prototype.css={
+				div1:{border:"1px solid orange",width:"300px",height:"800px",display:"inline-block",textAlign:"center"},
+				div2:{border:"1px solid blue",width:"290px",height:"100px",marginLeft:"5px",marginTop:"10px"},
+				div3:{border:"1px solid green",width:"290px",height:"480px",margin:"20px 0 0 5px"}
+			}
+
+			ReactDOM.render(<Porco/>,document.getElementById("example"))
+		</script>
+	</body>
+</html>

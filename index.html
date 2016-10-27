@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+    <script src="js/react.js"></script>
+    <script src="js/react-dom.js"></script>
+    <script src="js/browser.min.js"></script>	
+    <script src="js/jquery-1.11.3.js" type="text/javascript" charset="utf-8"></script>
+    
+    <style type="text/css">
+    *{padding:0;margin:0;}
+    	html,body{
+    		width:100%;height:100%;background: #ccc;overflow:hiden;
+    	}
+    .inp3{color:red;border:0;background: #ccc;text-align:left;margin-left:58px;font-size:12px;line-height:15px;}
+    </style>
+	</head>
+	<body>
+		<div id="APP"></div>
+		<script type="text/babel">
+			var stylecss={
+				header:{width:"100%",height:"100px",background:"#ccc",textAlign:"center",lineHeight:"30px"},
+				foot:{width:"100%",height:"100px",lineHeight:"100px",background:"red",position:"fixed",bottom:0,left:0,textAlign:"center"},
+				flo:{float:"left",width:"33.3%"}
+			}
+			var Header=React.createClass({
+				getInitialState:function(){//必须初始化怒然报错
+					return {
+						value:"o_o"//有待验证只有加字母擦可以
+					}
+				},				
+				ch:function(event){
+					//var _val=event.target.value
+					//console.log(_val)
+					this.setState({value:event.target.value})
+					//console.log(this.state.value)
+					$.ajax({//写在这里输入实时更新
+						type:"get",
+						dataType:"jsonp",					
+						url:"http://www.tngou.net/api/search?&keyword="+this.state.value+"&name=topword&_=1476963292734",//必须用双引号（第二种方式）
+						success:function(data){
+							var str=""
+							console.log(data)
+							for(var i in data.tngou){								
+								console.log(data.tngou[i].keywords)
+								str+=data.tngou[i].keywords+"</br>"
+							}
+							$(".inp3").html(str)
+						}
+					})
+				},
+				ck1:function(){
+					document.getElementById("txt").value=document.getElementsByClassName("inp3")[0].innerHTML+"000"
+					document.getElementsByClassName("inp3")[0].style.background="blue"
+				},
+				search:function(){
+					console.log(this.state.value)
+					$.ajax({
+						type:"get",
+						dataType:"jsonp",
+						url:"http://www.tngou.net/api/search",//(第一种方式)
+						data:{
+							keyword:this.state.value,//必填
+							name:"topword"//必填
+						},
+						success:function(data){
+							var str=""
+							console.log(data.tngou)
+							for(var i in data.tngou){								
+								str+=data.tngou[i].description
+								str+=data.tngou[i].keywords+"</br>"
+								str+='<img src={"http://tnfs.tngou.net/image"+data.tngou[i].img+"_300x120"}/>'
+							}
+							$("#list1").html(str)
+						}
+					})
+				},
+				render:function(){
+					return(
+						<div style={stylecss.header}>
+							<input id="txt" type="text"  onChange={this.ch}/>
+							<input type="button" value="搜索" onClick={this.search}/><br />
+							<p className="inp3" onClick={this.ck1}></p>
+						</div>
+					)
+				}
+			})
+			var List=React.createClass({
+				getInitialState:function(){
+					return{
+						default:""
+					}
+				},
+				componentWillMount:function(){
+					var _this=this
+					$.ajax({
+						url:"json.json",
+						success:function(data){
+							_this.setState({
+								default:data.mag
+							})
+						}
+					})
+				},
+				render:function(){//这里加key={i}是为了防止报错
+					var arr=[]
+					for(var i=0;i<this.state.default.length;i++){
+						arr.push(
+							<div key={i} id="list1">
+								<img src={this.state.default[i].img}/>
+								<p>{this.state.default[i].name}</p>
+							</div> 
+						)
+					}
+					return (<div>{arr}</div>)
+				}				
+			})
+			var List2=React.createClass({
+				getInitialState:function(){
+					return{
+						default:""
+					}
+				},
+				componentWillMount:function(){
+					var _this=this
+					$.ajax({
+						type:"get",
+						dataType:"jsonp",
+						url:"https://api.douban.com/v2/movie/search?q=张靓颖",
+						success:function(data){
+							_this.setState({
+								default:data.subjects
+							})
+							console.log(data,data.subjects)
+						}
+					})
+				},
+				render:function(){//这里加key={i}是为了防止报错
+					var arr=[]
+					for(var i=0;i<this.state.default.length;i++){
+						arr.push(
+						<div key={i}>
+							<img src={this.state.default[i].images.medium}/>
+							<p>{this.state.default[i].title}{this.state.default[i].year}</p>
+							<p>{this.state.default[i].genres[0]}</p>
+						</div>)
+					}
+					return(<div>{arr}</div>)
+				}					
+			})
+			var List3=React.createClass({
+				getInitialState:function(){
+					return{
+						default:""
+					}
+				},
+				componentWillMount:function(){
+					var _this=this
+					$.ajax({
+						type:"get",
+						dataType:"jsonp",
+						url:"http://www.tngou.net/api/top/list",
+						success:function(data){
+							_this.setState({
+								default:data.tngou
+							})
+							console.log(data.tngou)
+						}
+					})
+				},				
+				render:function(){//这里加key={i}是为了防止报错
+					var arr=[]
+					for(var i=0;i<this.state.default.length;i++){
+						arr.push(
+							<div key={i}>
+								<p>{this.state.default[i].title}</p>
+								<p>{this.state.default[i].fromname}</p>
+								<img src={"http:\/\/tnfs.tngou.net/image"+this.state.default[i].img+"_300x120"}/>
+								<p>{this.state.default[i].id}</p>
+							</div>
+						)
+					}
+					return(<div>{arr}</div>)
+				}
+				
+			})
+			var Foot=React.createClass({
+				ck:function(event){
+					var _title=event.target.getAttribute("title")
+					switch(_title){
+						case "index":
+						ReactDOM.unmountComponentAtNode(document.getElementById("content"))//删除当前组件
+						ReactDOM.render(<List/>,document.getElementById("content"))//渲染新组件
+						break;
+						case "list":
+						ReactDOM.unmountComponentAtNode(document.getElementById("content"))
+						ReactDOM.render(<List2/>,document.getElementById("content"))						
+						break;
+						case "my":
+						ReactDOM.unmountComponentAtNode(document.getElementById("content"))
+						ReactDOM.render(<List3/>,document.getElementById("content"))						
+						break;
+					}					
+				},
+				render:function(){
+					return(
+						<div style={stylecss.foot}>
+							<div onClick={this.ck} style={stylecss.flo} title="index">首页</div>
+							<div onClick={this.ck} style={stylecss.flo} title="list">列表</div>
+							<div onClick={this.ck} style={stylecss.flo} title="my">我的</div>
+						</div>
+					)
+				}
+			})
+			var All=React.createClass({
+				render:function(){
+					return(
+						<div>
+							<div id="header"></div>
+							<div id="content"></div>
+							<div id="foot"></div>
+						</div>
+					)
+				}				
+			})
+			ReactDOM.render(<All/>,document.getElementById('APP'))
+			ReactDOM.render(<Header/>,document.getElementById('header'))
+			ReactDOM.render(<Foot/>,document.getElementById('foot'))
+			ReactDOM.render(<List/>,document.getElementById('content'))
+			//这里只写一个List，因为其他的看不见，不加载快，其他不用加载时因为切换时先删除当下在添加，所以其实第一个也可以不用写只是要一个初始值而已
+		</script>
+	</body>
+</html>
